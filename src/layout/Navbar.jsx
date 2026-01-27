@@ -1,4 +1,6 @@
+import { Menu, PenBox, X } from "lucide-react"
 import Button from "../components/Button"
+import { useState } from "react"
 
 
 const navLinks = [
@@ -22,8 +24,11 @@ const navLinks = [
 
 
 const Navbar = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+
   return (
-    <header className="fixed top-0 left-0 right-0 bg-transparent py-5">
+    <header className="fixed top-0 left-0 right-0 bg-transparent py-5 z-50">
       <nav className="container mx-auto px-6 flex items-center justify-between">
         <a
           href=""
@@ -33,8 +38,8 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Nav */}
-        <div>
-          <div className="">
+        <div className="hidden md:flex items-center gap-1">
+          <div className="glass rounded-full px-2 py-1 flex items-center gap-1">
             {
               navLinks.map((link, index) => (
                 <a
@@ -50,10 +55,45 @@ const Navbar = () => {
         </div>
 
         {/* CTA BUTTON */}
-        <div className="">
+        <div className="hidden md:block">
           <Button size="sm">Contact Me</Button>
         </div>
+
+         {/* MOBILE MENU BUTTON */}
+        <button
+          className="md:hidden p-2 text-foreground cursor-pointer"
+        onClick={() => setMobileMenuOpen((prev) => !prev)}
+        >
+          {
+            mobileMenuOpen
+              ? <X size={24} />
+              : <Menu size={24} />
+          }
+        </button>
       </nav>
+
+      {/* MOBILE MENU */}
+      
+      {
+        mobileMenuOpen && (
+          <div className="md:hidden glass-strong animate-fade-in">
+            <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
+              {
+                  navLinks.map((link, index) => (
+                    <a
+                      className="text-lg text-muted-foreground hover:text-foreground py-2"
+                      href={link.href}
+                      key={index}
+                    > 
+                      {link.label}
+                    </a>
+                  ))
+                }
+                <Button size="sm">Contact Me</Button>
+            </div>
+          </div>
+          )
+      }
     </header>
   )
 }
